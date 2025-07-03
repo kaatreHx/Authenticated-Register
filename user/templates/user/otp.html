@@ -4,8 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Verification</title>
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .otp-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 20px;
+            text-align: center;
+        }
+        .resend-btn {
+            margin-top: 10px;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <h2>OTP Verification</h2>
+        <p>An OTP has been sent to your registered Email.</p>
+        <form action="{% url 'user:verify_otp' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="email" value="{{ email }}">
+            <input type="hidden" name="phone" value="{{ phone }}">
+            <input type="hidden" name="password" value="{{ password }}">
+            <input type="hidden" name="gen_otp" value="{{ otp }}">
+            <input type="text" class="otp-input" placeholder="Enter OTP" name="otp" required>
+            <button type="submit">Verify OTP</button>
+            <div class="resend-btn" onclick="resendOTP()">Resend OTP</div>
+        </form>
+    </div>
+    <script>
+        function resendOTP() {
+            var email = '{{ user.email }}';
+            var phone = '{{ user.phone }}';
+            var password = '{{ user.password }}';
+            console.log(email, phone, password);
+            alert('OTP has been resent to your Email');
+        }
+    </script>
 </body>
 </html>
